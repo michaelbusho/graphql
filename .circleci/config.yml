@@ -1,15 +1,14 @@
 version: 2.1
-orbs:
-  node: circleci/node@3.0.0
-workflows:
-  node-tests:
-    jobs:
-      - node/test
-steps:
-  - run:
-    name: Running E2E tests with JUnit reporter
-    command: |
-      cd integration-tests
-      npm run test
-  - store_test_results:
-      path: integration-tests/test-results
+jobs:
+  build:
+    docker:
+      - image: circleci/node:10-browsers
+    steps:
+      - checkout
+      - run:
+        name: Running Tests
+        command: |
+          cd integration-tests
+          npm run test
+      - store_test_results:
+          path: integration-tests/test-results
