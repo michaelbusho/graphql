@@ -7,9 +7,9 @@ jobs:
     steps:
       - checkout
       - run:
-        name: Installing libraries
-        command: |
-          npm install
+          name: Installing libraries
+          command: |
+            npm install
       - run:
           name: Running Unit Tests
           command: |
