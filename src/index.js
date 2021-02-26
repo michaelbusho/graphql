@@ -9,6 +9,9 @@ const port = process.env.PORT || 4000;
 const startServer = async () => {
 	const app = express();
 
+	// Hide tech for security purposes
+	app.disable('x-powered-by');
+
 	const server = new ApolloServer({
 		typeDefs,
 		resolvers,
