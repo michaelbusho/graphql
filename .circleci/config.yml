@@ -6,9 +6,9 @@ jobs:
     steps:
       - checkout
       - run:
-        name: Running Tests
-        command: |
-          cd integration-tests
-          npm run test
+          name: Running Tests
+          command: |
+            cd integration-tests
+            npm run test
       - store_test_results:
           path: integration-tests/test-results
