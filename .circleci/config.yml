@@ -5,3 +5,11 @@ workflows:
   node-tests:
     jobs:
       - node/test
+steps:
+  - run:
+    name: Running E2E tests with JUnit reporter
+    command: |
+      cd integration-tests
+      npm run test
+  - store_test_results:
+      path: integration-tests/test-results
