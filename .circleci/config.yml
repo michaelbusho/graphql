@@ -8,6 +8,7 @@ jobs:
       - run:
           name: Running Tests
           command: |
+            mkdir integration-test
             cd integration-tests
             npm run test
       - store_test_results:
