@@ -12,8 +12,6 @@ jobs:
       - run:
           name: Running Tests
           command: |
-            mkdir integration-tests
-            cd integration-tests
             npm run test:xml
       - store_test_results:
-          path: integration-tests/test-results
+          path: reports
