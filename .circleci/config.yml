@@ -6,6 +6,10 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Installing libraries
+          command: |
+            npm install
+      - run:
           name: Running Tests
           command: |
             mkdir integration-tests
