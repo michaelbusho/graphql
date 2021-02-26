@@ -1,8 +1,8 @@
 import { ApolloServer } from 'apollo-server-express';
 import express from 'express';
 import mongoose from 'mongoose';
-import resolvers from './resolvers';
-import typeDefs from './typeDefs';
+import resolvers from './graphql/resolvers';
+import typeDefs from './graphql/schemas/typeDefs';
 
 const port = process.env.PORT || 4000;
 

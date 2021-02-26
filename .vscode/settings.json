@@ -5,5 +5,8 @@
         "junitreport",
         "mkdir",
         "rfid"
-    ]
+    ],
+    "files.associations": {
+        "**/src/graphql/schemas/**/*.js": "graphql"
+      }
 }
