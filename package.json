@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jasmine",
     "test:xml": "./node_modules/jasmine-node/bin/jasmine-node spec --junitreport",
-    "test:coverage": "./node_modules/nyc/bin/nyc.js npm run test",
+    "test:coverage": "./node_modules/nyc/bin/nyc.js npm run test ",
+    "test:coverage:xml": "./node_modules/nyc/bin/nyc.js --reporter=clover npm run test ",
     "start": "nodemon --exec babel-node src/index.js"
   },
   "nyc": {

@@ -10,8 +10,14 @@ jobs:
           command: |
             npm install
       - run:
-          name: Running Tests
+          name: Running Unit Tests
           command: |
             npm run test:xml
+      - run:
+          name: Running Coverage Tests
+          command: |
+            npm run test:coverage:xml
       - store_test_results:
           path: reports
+      - store_artifacts:
+          path: coverage
