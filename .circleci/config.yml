@@ -6,10 +6,10 @@ jobs:
       - image: circleci/node:10-browsers
     steps:
       - checkout
-       - run:
-          name: Installing libraries
-          command: |
-            npm install
+      - run:
+        name: Installing libraries
+        command: |
+          npm install
       - run:
           name: Running Unit Tests
           command: |

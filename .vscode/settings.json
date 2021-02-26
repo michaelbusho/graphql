@@ -4,7 +4,9 @@
         "circleci",
         "junitreport",
         "mkdir",
-        "rfid"
+        "rfid",
+        "sonarcloud",
+        "sonarsource"
     ],
     "files.associations": {
         "**/src/graphql/schemas/**/*.js": "graphql"
