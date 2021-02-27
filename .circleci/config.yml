@@ -28,4 +28,5 @@ workflows:
           context: SonarCloud
           filters:
             branches:
-              only: master
+              only:
+                - master
