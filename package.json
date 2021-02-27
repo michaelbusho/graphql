@@ -4,17 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jasmine",
-    "test:xml": "./node_modules/jasmine-node/bin/jasmine-node spec --junitreport",
-    "test:coverage": "./node_modules/nyc/bin/nyc.js npm run test ",
-    "test:coverage:html": "./node_modules/nyc/bin/nyc.js --reporter=html npm run test ",
+    "test": "./node_modules/.bin/cypress run --reporter junit --reporter-options mochaFile=cypress/reports/results.xml",
+    "test:browser": "./node_modules/.bin/cypress open",
     "start": "nodemon --exec babel-node src/index.js"
   },
   "nyc": {
-    "all": true,
-    "include": [
-      "src/**/*.js"
-    ]
+    "report-dir": "cypress/coverage",
+    "include": "src",
+    "all": true
   },
   "keywords": [],
   "author": "",
@@ -25,6 +22,9 @@
     "@babel/eslint-parser": "^7.13.4",
     "@babel/node": "^7.13.0",
     "@babel/preset-env": "^7.13.5",
+    "@cypress/code-coverage": "^3.9.2",
+    "babel-plugin-istanbul": "^6.0.0",
+    "cypress": "^6.5.0",
     "eslint": "^7.2.0",
     "eslint-config-airbnb": "18.2.1",
     "eslint-config-prettier": "^8.1.0",
@@ -33,16 +33,13 @@
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-react-hooks": "^1.7.0",
-    "jasmine": "^3.6.4",
     "nodemon": "^2.0.7",
-    "nyc": "^15.1.0",
     "prettier": "^2.2.1"
   },
   "dependencies": {
     "apollo-server-express": "^2.21.0",
     "express": "^4.17.1",
     "graphql": "^15.5.0",
-    "jasmine-node": "^3.0.0",
     "mongoose": "^5.11.18"
   }
 }

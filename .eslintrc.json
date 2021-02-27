@@ -6,6 +6,6 @@
       "no-console": "off"
     },
     "env": {
-        "jasmine": true
+        "cypress": true
     }
 }

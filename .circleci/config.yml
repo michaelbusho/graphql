@@ -13,15 +13,11 @@ jobs:
       - run:
           name: Running Unit Tests
           command: |
-            npm run test:xml
-      - run:
-          name: Running Coverage Tests
-          command: |
-            npm run test:coverage:html
+            npm test
       - store_test_results:
-          path: reports
+          path: cypress/reports
       - store_artifacts:
-          path: coverage
+          path: cypress/coverage
       - sonarcloud/scan
 
 orbs:
