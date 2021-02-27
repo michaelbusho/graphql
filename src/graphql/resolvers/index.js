@@ -6,11 +6,9 @@ const getPermission = (role) => {
 };
 
 const rfidExists = (User, rfid) => {
-	return User.findOne({ rfid: rfid }).then((user) => {
-		if (user) {
+	return User.findOne({ rfid: rfid }).then((found_user) => {
+		if (found_user) {
 			return true;
-		} else {
-			return false;
 		}
 	});
 };
@@ -26,8 +24,8 @@ export default {
 
 			// Make sure that email and rfid don't already exist. If not then save
 			User.findOne({ email: email })
-				.then((user) => {
-					if (user) {
+				.then((found_user) => {
+					if (found_user) {
 						throw new Error('User exists already.');
 					} else {
 						if (rfidExists(User, rfid)) {
