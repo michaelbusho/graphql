@@ -16,8 +16,6 @@ jobs:
             npm test
       - store_test_results:
           path: cypress/reports
-      - store_artifacts:
-          path: cypress/coverage
       - sonarcloud/scan
 
 orbs:
