@@ -30,4 +30,3 @@ workflows:
             branches:
               only:
                 - master
-                - development
