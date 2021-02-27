@@ -5,12 +5,9 @@ const getPermission = (role) => {
 	return ['create_user'];
 };
 
-const rfidExists = (User, rfid) => {
-	return User.findOne({ rfid: rfid }).then((found_user) => {
-		if (found_user) {
-			return true;
-		}
-	});
+const rfidExists = async (rfid) => {
+	const found_user = await User.findOne({ rfid: rfid });
+	return found_user;
 };
 
 export default {
@@ -28,7 +25,7 @@ export default {
 					if (found_user) {
 						throw new Error('User exists already.');
 					} else {
-						if (rfidExists(User, rfid)) {
+						if (rfidExists(rfid)) {
 							throw new Error('RFID must be unique.');
 						}
 					}
