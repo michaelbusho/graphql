@@ -4,8 +4,6 @@ jobs:
   build:
     docker:
       - image: circleci/node:10-browsers
-    branches:
-      only: master
     steps:
       - checkout
       - run:
@@ -28,3 +26,6 @@ workflows:
     jobs:
       - build:
           context: SonarCloud
+          filters:
+            branches:
+              only: master
