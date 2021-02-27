@@ -5,8 +5,7 @@ jobs:
     docker:
       - image: circleci/node:10-browsers
     branches:
-      only:
-        - master
+      only: master
     steps:
       - checkout
       - run:
