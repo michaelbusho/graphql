@@ -39,6 +39,19 @@ export default gql`
 		image: String
 	}
 
+	input UserInputUpdate {
+		rfid: String
+		role: Roles
+		email: String
+		password: String
+		name: String
+		lastName: String
+		health_status: HealthStatus
+		address: String
+		phone_number: String
+		image: String
+	}
+
 	type Query {
 		findUserByRfid(rfid: String!): User
 		users: [User]
@@ -46,6 +59,7 @@ export default gql`
 
 	type Mutation {
 		createUser(UserInput: UserInput): User
+		updateUser(userID: ID!, UserInput: UserInputUpdate): User
 		deleteUser(userID: ID!): User
 	}
 `;

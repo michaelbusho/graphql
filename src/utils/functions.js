@@ -1,3 +1,5 @@
+import { roles, permissions } from './variables';
+
 export function assignPermissions(role) {
 	switch (role) {
 		case roles.ADMIN:
