@@ -1,7 +1,5 @@
-import Appearance from '../../models/appearance';
 import { ApolloError } from 'apollo-server-express';
 import Location from '../../models/location';
-import mongoose from 'mongoose';
 
 export default {
 	Query: {

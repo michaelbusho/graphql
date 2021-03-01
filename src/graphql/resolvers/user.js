@@ -26,7 +26,7 @@ export default {
 
 			try {
 				// Make sure that email and rfid don't already exist. If not then save
-				const new_user = await User.findOne({ $or: [{ email: email }, { rfid: rfid }] })
+				const created_user = await User.findOne({ $or: [{ email: email }, { rfid: rfid }] })
 					.then((found_user) => {
 						if (found_user) {
 							throw new Error('User with same email or rfid exists already.');
@@ -35,7 +35,7 @@ export default {
 					})
 					.then((hashed_pass) => {
 						const permissions = assignPermissions(role);
-						const new_user = new User({
+						return new User({
 							rfid,
 							role,
 							permissions,
@@ -48,13 +48,12 @@ export default {
 							address,
 							phone_number,
 						});
-						return new_user;
 					})
 					.catch((err) => {
 						console.error(err);
 						return null;
 					});
-				if (new_user) return await new_user.save();
+				if (created_user) return await created_user.save();
 				else throw new Error('Could not Create User.');
 			} catch (err) {
 				throw new ApolloError(err.message, 'CAN_NOT_SAVE_USER');
