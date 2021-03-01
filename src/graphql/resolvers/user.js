@@ -13,32 +13,19 @@ export default {
 	Mutation: {
 		createUser: async (_, { UserInput }) => {
 			try {
-				// Make sure that email and rfid don't already exist. If not then save
-				const created_user = await User.findOne({
-					$or: [{ email: UserInput.email }, { rfid: UserInput.rfid }],
-				})
-					.then((found_user) => {
-						if (found_user) {
-							throw new Error('User with same email or rfid exists already.');
-						}
-						return bcrypt.hash(UserInput.password, parseInt(process.env.HASH_SALT));
-					})
-					.then((hashed_pass) => {
-						const permissions = assignPermissions(UserInput.role);
-						UserInput.password = hashed_pass;
-						UserInput.permissions = permissions;
-						return new User({
-							...UserInput,
-						});
-					})
-					.catch((err) => {
-						console.error(err);
-						return null;
-					});
-				if (created_user) return await created_user.save();
-				else throw new Error('Could not Create User.');
+				const hashed_pass = await bcrypt.hash(UserInput.password, parseInt(process.env.HASH_SALT));
+				const permissions = assignPermissions(UserInput.role);
+				UserInput.password = hashed_pass;
+				UserInput.permissions = permissions;
+				const new_user = new User({
+					...UserInput,
+				});
+				return await new_user.save();
 			} catch (err) {
-				throw new ApolloError(err.message, 'CAN_NOT_SAVE_USER');
+				throw new ApolloError(
+					err.code === 11000 ? 'Email or rfid already belong to another user' : err.message,
+					'CAN_NOT_SAVE_USER'
+				);
 			}
 		},
 		deleteUser: async (_, { userID }) => {
@@ -75,7 +62,10 @@ export default {
 					return user;
 				} else throw new Error('Could not update user.');
 			} catch (err) {
-				throw new ApolloError(err.message, 'CAN_NOT_UPDATE_USER');
+				throw new ApolloError(
+					err.code === 11000 ? 'Email or rfid already belong to another user' : err.message,
+					'CAN_NOT_UPDATE_USER'
+				);
 			}
 		},
 	},

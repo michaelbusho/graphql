@@ -43,7 +43,7 @@ const userSchema = new Schema(
 		phone_number: {
 			type: String,
 		},
-		image: { data: Buffer, contentType: String },
+		image: { type: String },
 		permissions: [
 			{
 				type: String,

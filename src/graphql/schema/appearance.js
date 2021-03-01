@@ -5,15 +5,16 @@ export default gql`
 		_id: ID!
 		location: Location!
 		user: User!
+		createdAt: String
 	}
 
 	extend type Query {
-		appearances: [Appearance]
-		findAppearanceByUser(user_id: String!): Appearance
-		findAppearanceByLocation(location_id: String!): Appearance
+		findUserAppearances(user_id: String!): [Appearance]
+		findLocationAppearances(location_id: String!): [Appearance]
 	}
 
 	extend type Mutation {
 		createAppearance(user_id: String!, location_id: String!): Appearance
+		deleteAppearance(appearanceID: ID!): Appearance
 	}
 `;
