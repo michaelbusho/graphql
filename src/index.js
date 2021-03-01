@@ -3,6 +3,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import resolvers from './graphql/resolvers/index';
 import typeDefs from './graphql/schema/index';
+import isAuth from './middleware/isAuth';
 
 const port = process.env.APP_PORT || 4000;
 
@@ -12,9 +13,12 @@ const startServer = async () => {
 	// Hide tech for security purposes
 	app.disable('x-powered-by');
 
+	// app.use(isAuth);
+
 	const server = new ApolloServer({
 		typeDefs,
 		resolvers,
+		context: isAuth,
 	});
 
 	server.applyMiddleware({ app });

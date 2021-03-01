@@ -8,7 +8,7 @@ export const health_statuses = Object.freeze({
 	COMPROMISED: 'COMPROMISED',
 });
 
-export const permissions = Object.freeze({
+export const allPermissions = Object.freeze({
 	READ_USERS: 'READ_USERS',
 	MODIFY_USERS: 'MODIFY_USERS',
 	READ_LOCATIONS: 'READ_LOCATIONS',

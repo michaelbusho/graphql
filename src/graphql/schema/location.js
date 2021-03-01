@@ -20,6 +20,15 @@ export default gql`
 		description: String
 	}
 
+	input LocationInputUpdate {
+		name: String
+		capacity: Int
+		address: String
+		phone_number: String
+		email: String
+		description: String
+	}
+
 	extend type Query {
 		locations: [Location]
 		findLocationById(location_id: String!): Location
@@ -27,5 +36,7 @@ export default gql`
 
 	extend type Mutation {
 		createLocation(LocationInput: LocationInput): Location
+		updateLocation(locationID: ID!, LocationInput: LocationInputUpdate): Location
+		deleteLocation(locationID: ID!): Location
 	}
 `;

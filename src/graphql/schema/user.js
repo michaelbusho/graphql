@@ -11,6 +11,12 @@ export default gql`
 		COMPROMISED
 	}
 
+	type AuthData {
+		userID: ID!
+		token: String!
+		tokenExpiration: Int!
+	}
+
 	type User {
 		_id: ID!
 		rfid: String!
@@ -53,8 +59,9 @@ export default gql`
 	}
 
 	type Query {
-		findUserByRfid(rfid: String!): User
-		users: [User]
+		findUserByRfid(rfid: String!): User!
+		users: [User]!
+		login(email: String!, password: String!): AuthData!
 	}
 
 	type Mutation {
