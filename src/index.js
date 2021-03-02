@@ -21,19 +21,18 @@ const startServer = async () => {
 
 	server.applyMiddleware({ app });
 
-	await mongoose.connect(
-		`mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.MONGO_DATABASE}`,
-		{
-			useNewUrlParser: true,
-			useUnifiedTopology: true,
-			useCreateIndex: true,
-		}
-	);
-
-	// The `listen` method launches a web server.
-	app.listen({ port }, () => {
-		console.log(`server ready on port :${port}`);
-	});
+	await mongoose
+		.connect(
+			`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@attendance-usa.bqifs.mongodb.net/${process.env.MONGO_DATABASE}?retryWrites=true&w=majority`,
+			{ useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true }
+		)
+		.then(() => {
+			// The `listen` method launches a web server.
+			app.listen({ port }, () => {
+				console.log(`server ready on port :${port}`);
+			});
+		})
+		.catch((err) => console.log(err));
 };
 
 startServer();

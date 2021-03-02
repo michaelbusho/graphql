@@ -1,5 +1,6 @@
 import { roles, allPermissions } from './variables';
 import User from '../models/user';
+import Location from '../models/location';
 
 export function assignPermissions(role) {
 	switch (role) {

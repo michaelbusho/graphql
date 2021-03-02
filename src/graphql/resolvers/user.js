@@ -56,7 +56,7 @@ export default {
 				};
 			} catch (err) {
 				console.log(err.message);
-				throw new ApolloError('Unauthorized', 'UNAUTHORIZED');
+				throw new ApolloError(err.message, 'UNAUTHORIZED');
 			}
 		},
 	},
