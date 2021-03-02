@@ -5,7 +5,7 @@ import resolvers from './graphql/resolvers/index';
 import typeDefs from './graphql/schema/index';
 import isAuth from './middleware/isAuth';
 
-const port = process.env.APP_PORT || 4000;
+const port = process.env.PORT || 3000;
 
 const startServer = async () => {
 	const app = express();
@@ -29,7 +29,7 @@ const startServer = async () => {
 		)
 		.then(() => {
 			// The `listen` method launches a web server.
-			app.listen({ port }, () => {
+			app.listen(port, () => {
 				console.log(`server ready on port :${port}`);
 			});
 		})
