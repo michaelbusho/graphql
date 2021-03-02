@@ -16,7 +16,7 @@ export default {
 				}
 				return User.find();
 			} catch (err) {
-				throw new ApolloError('Unauthorized', 'CAN_NOT_FETCH_USERS');
+				throw new ApolloError(err.message, 'CAN_NOT_FETCH_USERS');
 			}
 		},
 		findUserByRfid: async (_, { rfid }, { isAuthenticated, permissions }) => {
@@ -30,7 +30,7 @@ export default {
 				}
 				return User.findOne({ rfid });
 			} catch (err) {
-				throw new ApolloError(err.message === 'Unauthorized' || err.message, 'CAN_NOT_FETCH_USER');
+				throw new ApolloError(err.message, 'CAN_NOT_FETCH_USER');
 			}
 		},
 		login: async (_, { email, password }) => {

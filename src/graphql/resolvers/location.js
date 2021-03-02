@@ -1,16 +1,39 @@
 import { ApolloError } from 'apollo-server-express';
 import Location from '../../models/location';
 import mongoose from 'mongoose';
+import { allPermissions } from '../../utils/variables';
+import { hasPermission } from '../../utils/functions';
 
 export default {
 	Query: {
-		locations: () => Location.find(),
-		findLocationById: (_, { location_id }) => Location.findOne({ _id: location_id }),
+		locations: (_, {}, { isAuthenticated, permissions }) => {
+			try {
+				if (!isAuthenticated || !hasPermission(permissions, allPermissions.READ_LOCATIONS)) {
+					throw new Error('Unauthorized.');
+				}
+				return Location.find();
+			} catch (err) {
+				throw new ApolloError(err.message, 'CAN_NOT_FETCH_LOCATIONS');
+			}
+		},
+		findLocationById: (_, { location_id }, { isAuthenticated, permissions }) => {
+			try {
+				if (!isAuthenticated || !hasPermission(permissions, allPermissions.READ_LOCATIONS)) {
+					throw new Error('Unauthorized.');
+				}
+				return Location.findOne({ _id: location_id });
+			} catch (error) {
+				throw new ApolloError(err.message, 'CAN_NOT_FETCH_LOCATIONS');
+			}
+		},
 	},
 
 	Mutation: {
-		createLocation: async (_, { LocationInput }) => {
+		createLocation: async (_, { LocationInput }, { isAuthenticated, permissions }) => {
 			try {
+				if (!isAuthenticated || !hasPermission(permissions, allPermissions.MODIFY_LOCATIONS)) {
+					throw new Error('Unauthorized.');
+				}
 				const new_location = new Location({
 					...LocationInput,
 				});
@@ -22,8 +45,11 @@ export default {
 				);
 			}
 		},
-		deleteLocation: async (_, { locationID }) => {
+		deleteLocation: async (_, { locationID }, { isAuthenticated, permissions }) => {
 			try {
+				if (!isAuthenticated || !hasPermission(permissions, allPermissions.MODIFY_LOCATIONS)) {
+					throw new Error('Unauthorized.');
+				}
 				if (!mongoose.Types.ObjectId.isValid(locationID)) {
 					throw new Error('Id not valid.');
 				}
@@ -38,8 +64,11 @@ export default {
 				throw new ApolloError(err.message, 'CAN_NOT_DELETE_LOCATION');
 			}
 		},
-		updateLocation: async (_, { locationID, LocationInput }) => {
+		updateLocation: async (_, { locationID, LocationInput }, { isAuthenticated, permissions }) => {
 			try {
+				if (!isAuthenticated || !hasPermission(permissions, allPermissions.MODIFY_LOCATIONS)) {
+					throw new Error('Unauthorized.');
+				}
 				if (!mongoose.Types.ObjectId.isValid(locationID)) {
 					throw new Error('Id not valid.');
 				}
