@@ -3,12 +3,7 @@ import { ApolloError } from 'apollo-server-express';
 import User from '../../models/user';
 import Location from '../../models/location';
 import mongoose from 'mongoose';
-import {
-	hasPermission,
-	cleanUserInfo,
-	populateAppearances,
-	transformAppearance,
-} from '../../utils/functions';
+import { hasPermission, populateAppearances, transformAppearance } from '../../utils/functions';
 import { allPermissions } from '../../utils/variables';
 
 export default {

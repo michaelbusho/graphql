@@ -13,8 +13,6 @@ const startServer = async () => {
 	// Hide tech for security purposes
 	app.disable('x-powered-by');
 
-	// app.use(isAuth);
-
 	const server = new ApolloServer({
 		typeDefs,
 		resolvers,

@@ -6,7 +6,7 @@ import { hasPermission } from '../../utils/functions';
 
 export default {
 	Query: {
-		locations: (_, {}, { isAuthenticated, permissions }) => {
+		locations: (_, _args, { isAuthenticated, permissions }) => {
 			try {
 				if (!isAuthenticated || !hasPermission(permissions, allPermissions.READ_LOCATIONS)) {
 					throw new Error('Unauthorized.');
@@ -83,8 +83,7 @@ export default {
 					}
 				);
 				if (updated_location.nModified || updated_location.ok) {
-					const post_location = await Location.findById(locationID);
-					return post_location;
+					return await Location.findById(locationID);
 				} else throw new Error('Could not update location.');
 			} catch (err) {
 				throw new ApolloError(

@@ -1,15 +1,14 @@
 import User from '../../models/user';
-import { assignPermissions } from '../../utils/functions';
 import bcrypt from 'bcryptjs';
 import { ApolloError } from 'apollo-server-express';
 import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
 import { allPermissions } from '../../utils/variables';
-import { hasPermission, cleanUserInfo } from '../../utils/functions';
+import { hasPermission, cleanUserInfo, assignPermissions } from '../../utils/functions';
 
 export default {
 	Query: {
-		users: (_, {}, { isAuthenticated, permissions }) => {
+		users: (_, _args, { isAuthenticated, permissions }) => {
 			try {
 				if (!isAuthenticated || !hasPermission(permissions, allPermissions.READ_USERS)) {
 					throw new Error('Unauthorized.');
@@ -121,8 +120,7 @@ export default {
 					}
 				);
 				if (updated_user.nModified) {
-					const post_user = await User.findById(userID);
-					return post_user;
+					return await User.findById(userID);
 				} else throw new Error('Could not update user.');
 			} catch (err) {
 				throw new ApolloError(
