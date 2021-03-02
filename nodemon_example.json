@@ -1,13 +1,11 @@
 {
     "env":{
         "APP_PORT": 8085,
-        "MONGO_USER": " ",
+        "MONGO_USER": "",
         "MONGO_PASSWORD": "",
-        "MONGO_HOST": "localhost",
-        "MONGO_PORT": 27017,
-        "MONGO_DATABASE": "attendanceSystem",
+        "MONGO_DATABASE": "",
         "HASH_SALT": 12,
-        "JWT_KEY": "MY_AWESOME_KEY_1000!",
+        "JWT_KEY": "",
         "TOKEN_LIFE": "1000h"
     }
 }
