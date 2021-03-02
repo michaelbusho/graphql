@@ -48,6 +48,95 @@ node run start:demon
 
 Depending on the size of the project, if it is small and simple enough the reference docs can be added to the README. For medium size to larger projects it is important to at least provide a link to where the API reference docs live.
 
+### Users:
+
+```graphql
+type User {
+	_id: ID!
+	rfid: String!
+	role: Roles!
+	permissions: [String!]!
+	email: String!
+	password: String
+	name: String!
+	lastName: String!
+	health_status: HealthStatus!
+	address: String
+	phone_number: String
+	image: String
+}
+```
+
+User Queries:
+
+```graphql
+findUserByRfid(rfid: String!): User!
+users: [User]!
+login(email: String!, password: String!): AuthData!
+```
+
+User Mutations:
+
+```graphql
+createUser(UserInput: UserInput): User
+updateUser(userID: ID!, UserInput: UserInputUpdate): User
+deleteUser(userID: ID!): User
+```
+
+### Locations:
+
+```graphql
+type Location {
+	_id: ID!
+	name: String!
+	capacity: Int!
+	address: String
+	phone_number: String
+	email: String
+	description: String
+}
+```
+
+Location Queries:
+
+```graphql
+locations: [Location]
+findLocationById(location_id: String!): Location
+```
+
+Location Mutations:
+
+```graphql
+createLocation(LocationInput: LocationInput): Location
+updateLocation(locationID: ID!, LocationInput: LocationInputUpdate): Location
+deleteLocation(locationID: ID!): Location
+```
+
+### Appearances:
+
+```graphql
+type Appearance {
+	_id: ID!
+	location: Location!
+	user: User!
+	createdAt: String
+}
+```
+
+Appearance Queries:
+
+```graphql
+findUserAppearances(user_id: String!): [Appearance]
+findLocationAppearances(location_id: String!): [Appearance]
+```
+
+Appearance Mutations:
+
+```graphql
+createAppearance(user_id: String!, location_id: String!): Appearance
+deleteAppearance(appearanceID: ID!): Appearance
+```
+
 ## Tests
 
 Describe and show how to run the tests with code examples.
