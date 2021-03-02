@@ -17,11 +17,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@babel/cli": "^7.13.0",
-    "@babel/core": "^7.13.1",
     "@babel/eslint-parser": "^7.13.4",
-    "@babel/node": "^7.13.0",
-    "@babel/preset-env": "^7.13.5",
     "@cypress/code-coverage": "^3.9.2",
     "babel-plugin-istanbul": "^6.0.0",
     "cypress": "^6.5.0",
@@ -37,6 +33,10 @@
     "prettier": "^2.2.1"
   },
   "dependencies": {
+    "@babel/cli": "^7.13.0",
+    "@babel/core": "^7.13.8",
+    "@babel/node": "^7.13.0",
+    "@babel/preset-env": "^7.13.9",
     "apollo-server-express": "^2.21.0",
     "bcryptjs": "^2.4.3",
     "express": "^4.17.1",
