@@ -9,7 +9,6 @@ const port = process.env.PORT || 3000;
 
 const startServer = async () => {
 	const app = express();
-
 	// Hide tech for security purposes
 	app.disable('x-powered-by');
 

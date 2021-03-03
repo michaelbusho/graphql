@@ -38,7 +38,7 @@ export default {
 				if (!user) {
 					throw new Error('User Does not exist.');
 				}
-				const isEqual = bcrypt.compare(password, user.password);
+				const isEqual = await bcrypt.compare(password, user.password).then((res) => res);
 				if (!isEqual) {
 					throw new Error('Incorrect Password.');
 				}
@@ -112,6 +112,9 @@ export default {
 				const pre_user = await User.findById(userID);
 				if (!pre_user) {
 					throw new Error('User does not exist.');
+				}
+				if (UserInput.role) {
+					UserInput.permissions = assignPermissions(UserInput.role);
 				}
 				const updated_user = await User.updateOne(
 					{ _id: userID },
