@@ -38,7 +38,7 @@ export default {
 				if (!user) {
 					throw new Error('User Does not exist.');
 				}
-				const isEqual = bcrypt.compare(password, user.password);
+				const isEqual = await bcrypt.compare(password, user.password).then((res) => res);
 				if (!isEqual) {
 					throw new Error('Incorrect Password.');
 				}
