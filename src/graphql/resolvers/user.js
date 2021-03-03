@@ -113,6 +113,9 @@ export default {
 				if (!pre_user) {
 					throw new Error('User does not exist.');
 				}
+				if (UserInput.role) {
+					UserInput.permissions = assignPermissions(UserInput.role);
+				}
 				const updated_user = await User.updateOne(
 					{ _id: userID },
 					{
