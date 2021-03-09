@@ -22,7 +22,7 @@ export default {
 					throw new Error('Unauthorized.');
 				}
 				return Location.findOne({ _id: location_id });
-			} catch (error) {
+			} catch (err) {
 				throw new ApolloError(err.message, 'CAN_NOT_FETCH_LOCATIONS');
 			}
 		},
