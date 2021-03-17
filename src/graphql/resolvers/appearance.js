@@ -13,7 +13,7 @@ export default {
 				if (!isAuthenticated || !hasPermission(permissions, allPermissions.READ_APPEARANCES)) {
 					throw new Error('Unauthorized.');
 				}
-				return Appearance.find({ user: user_id })
+				return Appearance.find({ _id: user_id })
 					.then((appearances) => {
 						return populateAppearances(appearances);
 					})
@@ -27,7 +27,7 @@ export default {
 				if (!isAuthenticated || !hasPermission(permissions, allPermissions.READ_APPEARANCES)) {
 					throw new Error('Unauthorized.');
 				}
-				return Appearance.find({ location: location_id })
+				return Appearance.find({ _id: location_id })
 					.then((appearances) => {
 						return fullAppearances(appearances);
 					})
