@@ -1,0 +1,24 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "Test Server",
+        "sourceMaps": true,
+        "env": {
+          "BABEL_ENV": "debug",
+          "PORT": "8080",
+          "MONGO_USER": "",
+          "MONGO_PASSWORD": "",
+          "MONGO_DATABASE": "",
+          "HASH_SALT": "12",
+          "JWT_KEY": "",
+          "TOKEN_LIFE": ""
+        },
+        "program": "${workspaceFolder}/src/index.js",
+        "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/babel-node",
+        "runtimeArgs": ["--presets", "@babel/preset-env"]
+      }
+    ]
+}

@@ -4,3 +4,4 @@ cypress/reports
 cypress/coverage
 nodemon.json
 dist
+.vscode/launch.json

@@ -13,10 +13,8 @@ export default {
 				if (!isAuthenticated || !hasPermission(permissions, allPermissions.READ_APPEARANCES)) {
 					throw new Error('Unauthorized.');
 				}
-				return Appearance.find({ _id: user_id })
-					.then((appearances) => {
-						return populateAppearances(appearances);
-					})
+				return Appearance.find({ user: new mongoose.Types.ObjectId(user_id) })
+					.then((appearances) => populateAppearances(appearances))
 					.catch(() => null);
 			} catch (err) {
 				throw new ApolloError(err.message, 'CAN_NOT_FETCH_APPEARANCES');
@@ -27,10 +25,9 @@ export default {
 				if (!isAuthenticated || !hasPermission(permissions, allPermissions.READ_APPEARANCES)) {
 					throw new Error('Unauthorized.');
 				}
-				return Appearance.find({ _id: location_id })
-					.then((appearances) => {
-						return fullAppearances(appearances);
-					})
+
+				return Appearance.find({ location: new mongoose.Types.ObjectId(location_id) })
+					.then((appearances) => populateAppearances(appearances))
 					.catch(() => null);
 			} catch (err) {
 				throw new ApolloError(err.message, 'CAN_NOT_FETCH_APPEARANCES');
