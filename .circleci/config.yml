@@ -20,6 +20,8 @@ jobs:
 
 orbs:
   sonarcloud: sonarsource/sonarcloud@1.0.1
+  cypress: cypress-io/cypress@1
+  snyk: snyk/snyk@0.0.13
 
 workflows:
   main:
@@ -31,3 +33,5 @@ workflows:
               only:
                 - master
                 - development
+      - cypress/run:
+          yarn: true
