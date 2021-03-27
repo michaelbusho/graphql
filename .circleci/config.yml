@@ -21,8 +21,10 @@ jobs:
             npm install &&
             npm test
       - store_test_results:
-          path: cypress
-          destination: test_results
+          path: cypress/reports
+      - store_artifacts:
+          path: cypress/coverage
+          destination: coverage_results
 
   analyze:
     docker:
