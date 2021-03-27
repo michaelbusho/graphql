@@ -10,15 +10,7 @@
 
 #
 
-A little info about your project and/ or overview that explains **what** the project is about.
-
-## Motivation
-
-A short description of the motivation behind the creation and maintenance of the project. This should explain **why** the project exists.
-
-## Tech/framework used
-
-Ex. -
+This project is a simple graphql server. Clients are able to perform CRUD operations. The server stores the data to a mongodb cloud database.
 
 <b>Built with</b>
 
@@ -27,27 +19,39 @@ Ex. -
 - [Apollo Server](https://www.apollographql.com/)
 - [Mongodb](https://www.mongodb.com/)
 
-## Features
-
-What makes your project stand out?
-
-## Code Example
-
-Show what the library does as concisely as possible, developers should be able to figure out **how** your project solves their problem by looking at the code example. Make sure the API you are showing off is obvious, and that your code is short and concise.
-
 ## Installation
 
-Provide step by step series of examples and explanations about how to get a development env running. Example
-Install node then
+1. [Install Node.js](https://nodejs.org/en/download/)
+2. Install Node packages by running
 
 ```
 npm install
-node run start:demon
 ```
+
+3. Create a file, named nodemon.json on the root folder and structure it like the nodemon_example.json. Then fill in the required env values.
+
+|                |                                                          |
+| -------------- | -------------------------------------------------------- |
+| PORT           | Port Where the server should run                         |
+| MONGO_USER     | Mongodb Atlas Username                                   |
+| MONGO_PASSWORD | Mongodb Atlas Password                                   |
+| MONGO_DATABASE | Mongodb Atlas Database Name                              |
+| HASH_SALT      | Integer to denote number of salt when hashing a password |
+| JWT_KEY        | JWT key to sign jwt tokens                               |
+| TOKEN_LIFE     | How long should each jwt token live                      |
+|                |                                                          |
+
+4. Run server on watch mode
+
+```
+npm run start:demon
+```
+
+<sup>\* You will need to create a [mongo db cloud atlas account](https://www.mongodb.com/cloud/atlas) and generate the credentials</sup>
 
 ## API Reference
 
-Depending on the size of the project, if it is small and simple enough the reference docs can be added to the README. For medium size to larger projects it is important to at least provide a link to where the API reference docs live.
+The API offers graphql queries and mutations for 3 different models. Users, Locations and Appearances.
 
 ### Users:
 
@@ -138,13 +142,29 @@ createAppearance(user_id: String!, location_id: String!): Appearance
 deleteAppearance(appearanceID: ID!): Appearance
 ```
 
+The requests are authenticated and certain actions/requests are restricted and available only to authorized user roles. The API uses a JWT token to achieve this. The query login() returns a valid JWT token upon authentication.
+
+User password are hashed using bcrypt.
+
 ## Tests
 
-Describe and show how to run the tests with code examples.
+Unit tests are performed using cypress. To run the unit tests and generate test coverage reports simply run
+
+```
+npm test
+```
+
+The terminal will show the results of the tests. The folder cypress/coverage contains the coverage reports. Simply open cypress/coverage/Icov-report/index.html in a browser. To run the tests in a cypress browser run
+
+```
+npm run test:browser
+```
 
 ## How to use?
 
 If people like your project they’ll want to learn how they can use it. To do so include step by step guide to use your project.
+
+Postman, browser or requests through code
 
 ## Credits
 
