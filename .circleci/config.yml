@@ -10,7 +10,6 @@ jobs:
           name: Installing libraries
           command: |
             npm install
-
   test:
     docker:
       - image: circleci/node:10-browsers

@@ -4,7 +4,6 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=michaelbusho_graphql&metric=alert_status)](https://sonarcloud.io/dashboard?id=michaelbusho_graphql)
 [![js-airbnb-style](https://img.shields.io/badge/code%20style-airbnb-blue)](https://github.com/airbnb/javascript)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=michaelbusho_graphql&metric=coverage)](https://sonarcloud.io/dashboard?id=michaelbusho_graphql)
-
 [![Known Vulnerabilities](https://snyk.io/test/github/michaelbusho/graphql/badge.svg)](https://snyk.io/test/github/michaelbusho/graphql)
 
 ![Cover Image](./resources/cover_image.png)
