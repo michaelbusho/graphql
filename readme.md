@@ -22,13 +22,19 @@ This project is a simple graphql server. Clients are able to perform CRUD operat
 ## Installation
 
 1. [Install Node.js](https://nodejs.org/en/download/)
-2. Install Node packages by running
+2. Clone this repo by running
+
+```
+git clone https://github.com/michaelbusho/graphql.git
+```
+
+3. Navigate into the newly cloned repo and install Node packages by running
 
 ```
 npm install
 ```
 
-3. Create a file, named nodemon.json on the root folder and structure it like the nodemon_example.json. Then fill in the required env values.
+4. Create a file, named nodemon.json on the root folder and structure it like the nodemon_example.json. Then fill in the required env values.
 
 |                |                                                          |
 | -------------- | -------------------------------------------------------- |
@@ -41,7 +47,7 @@ npm install
 | TOKEN_LIFE     | How long should each jwt token live                      |
 |                |                                                          |
 
-4. Run server on watch mode
+5. Run server on watch mode
 
 ```
 npm run start:demon
@@ -142,6 +148,14 @@ createAppearance(user_id: String!, location_id: String!): Appearance
 deleteAppearance(appearanceID: ID!): Appearance
 ```
 
+The requests are authenticated and certain actions/requests are restricted and available only to authorized user roles. The API uses a JWT token to achieve this. The query login() returns a valid JWT token upon authentication. The token is valid for a predefined lifespan.
+
+User passwords are hashed using bcrypt.
+
+## Tests
+
+![Coverage Image](./resources/coverage_image.png)
+
 The requests are authenticated and certain actions/requests are restricted and available only to authorized user roles. The API uses a JWT token to achieve this. The query login() returns a valid JWT token upon authentication.
 
 User password are hashed using bcrypt.
@@ -159,6 +173,8 @@ The terminal will show the results of the tests. The folder cypress/coverage con
 ```
 npm run test:browser
 ```
+
+If you are using vscode and you wish to run the server on debug mode create a launch.json file inside the .vscode folder and structure it like the launch_sample.json. The env variables should be the same as in the nodemon.json.
 
 ## How to use?
 
