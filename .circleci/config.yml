@@ -21,11 +21,9 @@ jobs:
             npm install &&
             npm test
       - store_test_results:
-          path: cypress/reports
+          path: cypress
           destination: test_results
-      - store_test_results:
-          path: cypress/coverage
-          destination: coverage_results
+
   analyze:
     docker:
       - image: circleci/node:10-browsers
