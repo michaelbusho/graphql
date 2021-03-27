@@ -17,6 +17,13 @@ jobs:
       - store_test_results:
           path: cypress/reports
       - sonarcloud/scan
+  snyk/scan:
+    docker:
+        - image: circleci/node:10
+      steps:
+        - checkout
+        - run: npm install -q
+        - snyk/scan 
 
 orbs:
   sonarcloud: sonarsource/sonarcloud@1.0.1
