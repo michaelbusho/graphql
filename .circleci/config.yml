@@ -18,38 +18,16 @@ jobs:
           path: cypress/reports
       - sonarcloud/scan
       - snyk/scan
-  security-check:
-    docker:
-      - image: circleci/node:10-browsers
-    steps:
-      - checkout
-      - run: npm install -q
-      - snyk/scan
 
 orbs:
   sonarcloud: sonarsource/sonarcloud@1.0.1
-  cypress: cypress-io/cypress@1
   snyk: snyk/snyk@0.0.13
 
 workflows:
   main:
     jobs:
       - build:
-          context: SonarCloud
-          filters:
-            branches:
-              only:
-                - master
-                - development
-      - cypress/run:
-          yarn: true
-          filters:
-            branches:
-              only:
-                - master
-                - development
-      - security-check:
-          context: Snyk
+          context: General
           filters:
             branches:
               only:
