@@ -155,13 +155,6 @@ User passwords are hashed using bcrypt.
 ## Tests
 
 ![Coverage Image](./resources/coverage_image.png)
-
-The requests are authenticated and certain actions/requests are restricted and available only to authorized user roles. The API uses a JWT token to achieve this. The query login() returns a valid JWT token upon authentication.
-
-User password are hashed using bcrypt.
-
-## Tests
-
 Unit tests are performed using cypress. To run the unit tests and generate test coverage reports simply run
 
 ```
