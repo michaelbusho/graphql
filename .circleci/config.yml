@@ -19,7 +19,7 @@ jobs:
       - sonarcloud/scan
   snyk/scan:
     docker:
-      - image: circleci/node:10
+      - image: circleci/node:10-browsers
     steps:
       - checkout
       - run: npm install -q
