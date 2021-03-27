@@ -42,3 +42,15 @@ workflows:
                 - development
       - cypress/run:
           yarn: true
+          filters:
+            branches:
+              only:
+                - master
+                - development
+      - snyk/scan:
+          context: Snyk
+          filters:
+            branches:
+              only:
+                - master
+                - development
