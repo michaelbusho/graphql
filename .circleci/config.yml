@@ -10,22 +10,48 @@ jobs:
           name: Installing libraries
           command: |
             npm install
+
+  test:
+    docker:
+      - image: circleci/node:10-browsers
+    steps:
+      - checkout
       - run:
           name: Running Unit Tests
           command: |
+            npm install &&
             npm test
       - store_test_results:
           path: cypress/reports
+  analyze:
+    docker:
+      - image: circleci/node:10-browsers
+    steps:
+      - checkout
       - sonarcloud/scan
+      - snyk/scan
 
 orbs:
   sonarcloud: sonarsource/sonarcloud@1.0.1
+  snyk: snyk/snyk@0.0.13
 
 workflows:
   main:
     jobs:
       - build:
-          context: SonarCloud
+          filters:
+            branches:
+              only:
+                - master
+                - development
+      - test:
+          filters:
+            branches:
+              only:
+                - master
+                - development
+      - analyze:
+          context: General
           filters:
             branches:
               only:

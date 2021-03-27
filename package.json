@@ -34,7 +34,7 @@
     "prettier": "^2.2.1"
   },
   "dependencies": {
-    "@babel/cli": "^7.13.0",
+    "@babel/cli": "^7.13.10",
     "@babel/core": "^7.13.8",
     "@babel/node": "^7.13.0",
     "@babel/plugin-transform-runtime": "^7.13.9",
@@ -45,6 +45,6 @@
     "express": "^4.17.1",
     "graphql": "^15.5.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.11.15"
+    "mongoose": "^5.12.2"
   }
 }

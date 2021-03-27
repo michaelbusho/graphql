@@ -5,6 +5,7 @@
         "junitreport",
         "mkdir",
         "rfid",
+        "snyk",
         "sonarcloud",
         "sonarsource"
     ],
