@@ -17,7 +17,8 @@ jobs:
       - store_test_results:
           path: cypress/reports
       - sonarcloud/scan
-  snyk/scan:
+      - snyk/scan
+  security-check:
     docker:
       - image: circleci/node:10-browsers
     steps:
@@ -47,7 +48,7 @@ workflows:
               only:
                 - master
                 - development
-      - snyk/scan:
+      - security-check:
           context: Snyk
           filters:
             branches:
