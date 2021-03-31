@@ -1,6 +1,7 @@
 import { ApolloServer } from 'apollo-server-express';
 import express from 'express';
 import mongoose from 'mongoose';
+import EnhancedRedis from './utils/enhancedCaching';
 import resolvers from './graphql/resolvers/index';
 import typeDefs from './graphql/schema/index';
 import isAuth from './middleware/isAuth';
@@ -15,6 +16,9 @@ const startServer = async () => {
 	const server = new ApolloServer({
 		typeDefs,
 		resolvers,
+		persistedQueries: {
+			cache: new EnhancedRedis(),
+		},
 		context: isAuth,
 		formatError: function (error) {
 			return {
