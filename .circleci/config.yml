@@ -13,7 +13,6 @@ jobs:
       - save_cache:
           paths:
             - node_modules
-            - /home/circleci/.cache/Cypress
       - persist_to_workspace:
           root: .
           paths:
