@@ -15,8 +15,22 @@ const startServer = async () => {
 	const server = new ApolloServer({
 		typeDefs,
 		resolvers,
-
 		context: isAuth,
+		formatError: function (error) {
+			return {
+				message: error && error.message,
+				statusCode:
+					error &&
+					error.extensions &&
+					error.extensions.exception &&
+					error.extensions.exception.statusCode,
+				status:
+					error &&
+					error.extensions &&
+					error.extensions.exception &&
+					error.extensions.exception.status,
+			};
+		},
 	});
 
 	server.applyMiddleware({ app });
