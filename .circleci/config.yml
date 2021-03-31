@@ -11,11 +11,11 @@ jobs:
           command: |
             npm install
       - save_cache:
-          key: -{{ checksum "package-lock.json" }}
+          key: -{{ checksum "package.json" }}
           paths:
             - node_modules
-            - ~/.cache
-            - cypress/*
+            - /root/.cache/Cypress
+
       - persist_to_workspace:
           root: .
           paths:
