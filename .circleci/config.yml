@@ -31,14 +31,10 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Running Unit Tests
+          name: Testing
           command: |
-            npm install &&
-            npm test
-      - store_test_results:
-          path: cypress/reports
-      - store_artifacts:
-          path: cypress/coverage
+            pwd &&
+            ls
       - sonarcloud/scan
       - snyk/scan
 
@@ -50,6 +46,12 @@ workflows:
   main:
     jobs:
       - build:
+          filters:
+            branches:
+              only:
+                - master
+                - development
+      - test:
           filters:
             branches:
               only:
