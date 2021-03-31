@@ -18,7 +18,6 @@ jobs:
       - run:
           name: Running Unit Tests
           command: |
-            npm install &&
             npm test
       - store_test_results:
           path: cypress/reports
@@ -47,6 +46,8 @@ workflows:
                 - master
                 - development
       - test:
+          requires:
+            - build
           filters:
             branches:
               only:
