@@ -30,13 +30,6 @@ jobs:
       - image: circleci/node:10-browsers
     steps:
       - checkout
-      - run:
-          name: Testing
-          command: |
-            npm install &&
-            npm test &&
-            cd cypress &&
-            ls
       - sonarcloud/scan
       - snyk/scan
 
