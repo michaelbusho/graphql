@@ -33,7 +33,8 @@ jobs:
       - run:
           name: Testing
           command: |
-            pwd &&
+            npm install &&
+            npm test &&
             cd cypress &&
             ls
       - sonarcloud/scan
