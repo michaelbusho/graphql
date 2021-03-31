@@ -24,7 +24,6 @@ jobs:
           path: cypress/reports
       - store_artifacts:
           path: cypress/coverage
-          destination: coverage_results
 
   analyze:
     docker:
