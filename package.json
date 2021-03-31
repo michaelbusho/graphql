@@ -6,9 +6,9 @@
   "scripts": {
     "test": "./node_modules/.bin/cypress run --reporter junit --reporter-options mochaFile=cypress/reports/results.xml",
     "test:browser": "./node_modules/.bin/cypress open",
-    "build": "babel src -d dist",
-    "start": "npm run build && node dist/index.js",
-    "start:demon": "nodemon dist/index.js"
+    "build": "babel src -d dist --source-maps",
+    "start": "npm run build && node dist/index.js ",
+    "start:demon": "nodemon --exec babel-node src/index.js"
   },
   "nyc": {
     "report-dir": "cypress/coverage",

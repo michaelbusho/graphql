@@ -6,4 +6,8 @@ ignore:
     - '@babel/cli > @nicolo-ribaudo/chokidar-2 > glob-parent':
         reason: No patch available yet
         expires: '2021-04-26T01:38:57.160Z'
+  SNYK-JS-MQUERY-1089718:
+    - mongoose > mquery:
+        reason: No patches
+        expires: '2021-04-30T01:39:17.056Z'
 patch: {}

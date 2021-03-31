@@ -10,27 +10,50 @@ jobs:
           name: Installing libraries
           command: |
             npm install
+      - save_cache:
+          key: -{{ checksum "package.json" }}
+          paths:
+            - node_modules/*
+            - cypress/*
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
   test:
     docker:
       - image: circleci/node:10-browsers
     steps:
       - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Install Cypress
+          command: |
+            ./node_modules/.bin/cypress install
       - run:
           name: Running Unit Tests
           command: |
-            npm install &&
             npm test
+      - save_cache:
+          key: -{{ checksum "package.json" }}
+          paths:
+            - cypress/coverage/*
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
       - store_test_results:
           path: cypress/reports
       - store_artifacts:
           path: cypress/coverage
-          destination: coverage_results
 
   analyze:
     docker:
       - image: circleci/node:10-browsers
     steps:
       - checkout
+      - attach_workspace:
+          at: .
       - sonarcloud/scan
       - snyk/scan
 
@@ -48,6 +71,8 @@ workflows:
                 - master
                 - development
       - test:
+          requires:
+            - build
           filters:
             branches:
               only:
@@ -55,6 +80,8 @@ workflows:
                 - development
       - analyze:
           context: General
+          requires:
+            - test
           filters:
             branches:
               only:
