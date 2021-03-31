@@ -11,6 +11,7 @@ jobs:
           command: |
             npm install
       - save_cache:
+          key: -{{ checksum "package-lock.json" }}
           paths:
             - node_modules
       - persist_to_workspace:
