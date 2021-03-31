@@ -39,14 +39,6 @@ jobs:
           path: cypress/reports
       - store_artifacts:
           path: cypress/coverage
-      - save_cache:
-          key: -{{ checksum "package.json" }}
-          paths:
-            - cypress
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .
 
   analyze:
     docker:
