@@ -11,6 +11,7 @@ jobs:
           command: |
             npm install
           cache-path: node_modules
+          cache-path:  /home/circleci/.cache/Cypress
       - persist_to_workspace:
           root: .
           paths:
