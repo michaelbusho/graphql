@@ -34,6 +34,10 @@ jobs:
           name: Running Unit Tests
           command: |
             npm test
+      - save_cache:
+          key: -{{ checksum "package.json" }}
+          paths:
+            - cypress/coverage/*
       - store_test_results:
           path: cypress/reports
       - store_artifacts:
