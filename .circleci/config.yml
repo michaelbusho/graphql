@@ -61,6 +61,8 @@ workflows:
                 - development
       - analyze:
           context: General
+          requires:
+            - test
           filters:
             branches:
               only:
