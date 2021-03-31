@@ -38,6 +38,10 @@ jobs:
           key: -{{ checksum "package.json" }}
           paths:
             - cypress/coverage/*
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
       - store_test_results:
           path: cypress/reports
       - store_artifacts:
