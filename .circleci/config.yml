@@ -34,7 +34,7 @@ jobs:
           name: Testing
           command: |
             pwd &&
-            ls/cypress
+            ls
       - sonarcloud/scan
       - snyk/scan
 
