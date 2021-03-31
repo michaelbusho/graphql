@@ -13,9 +13,8 @@ jobs:
       - save_cache:
           key: -{{ checksum "package.json" }}
           paths:
-            - node_modules
-            - ~/.cache
-            - cypress.json
+            - node_modules/*
+            - cypress/*
       - persist_to_workspace:
           root: .
           paths:
@@ -27,10 +26,6 @@ jobs:
       - checkout
       - attach_workspace:
           at: .
-      - run:
-          name: Install Cypress
-          command: |
-            cypress install
       - run:
           name: Running Unit Tests
           command: |
@@ -45,8 +40,6 @@ jobs:
       - image: circleci/node:10-browsers
     steps:
       - checkout
-      - attach_workspace:
-        at: .
       - sonarcloud/scan
       - snyk/scan
 
