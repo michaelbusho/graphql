@@ -30,6 +30,15 @@ jobs:
       - image: circleci/node:10-browsers
     steps:
       - checkout
+      - run:
+          name: Running Unit Tests
+          command: |
+            npm install &&
+            npm test
+      - store_test_results:
+          path: cypress/reports
+      - store_artifacts:
+          path: cypress/coverage
       - sonarcloud/scan
       - snyk/scan
 
@@ -41,12 +50,6 @@ workflows:
   main:
     jobs:
       - build:
-          filters:
-            branches:
-              only:
-                - master
-                - development
-      - test:
           filters:
             branches:
               only:
