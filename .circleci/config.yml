@@ -10,8 +10,10 @@ jobs:
           name: Installing libraries
           command: |
             npm install
-          cache-path: node_modules
-          cache-path:  /home/circleci/.cache/Cypress
+      - save_cache:
+          paths:
+            - node_modules
+            - /home/circleci/.cache/Cypress
       - persist_to_workspace:
           root: .
           paths:
