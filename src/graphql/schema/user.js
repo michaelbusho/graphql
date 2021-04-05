@@ -17,7 +17,7 @@ export default gql`
 		tokenExpiration: Int!
 	}
 
-	type User {
+	type User @cacheControl(maxAge: 1800) {
 		_id: ID!
 		rfid: String!
 		role: Roles!
