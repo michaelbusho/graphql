@@ -8,25 +8,54 @@ import CustomError from '../../utils/customError';
 
 export default {
 	Query: {
-		users: (_, _args, { isAuthenticated, permissions }) => {
+		users: async (_, _args, { isAuth, cache }) => {
 			try {
+				const { isAuthenticated, permissions } = isAuth;
+				const cacheReady = cache.status === 'ready';
+
 				if (!isAuthenticated || !hasPermission(permissions, allPermissions.READ_USERS)) {
 					throw new Error('Unauthorized');
 				}
-				return User.find();
+
+				//If users already in cache return them
+				if (cacheReady) {
+					const stringifiedUsers = await cache.lrange('allUsers', 0, -1);
+					const usersInCache = stringifiedUsers.length ? JSON.parse(stringifiedUsers) : [];
+					if (usersInCache.length) return usersInCache;
+				}
+
+				const all_users = await User.find();
+
+				//All Users were not in cache save them
+				cacheReady && (await cache.rpush('allUsers', JSON.stringify(all_users)));
+
+				return all_users;
 			} catch (err) {
 				throw new CustomError(err.message, err.message === 'Unauthorized' ? 403 : 500);
 			}
 		},
-		findUserByRfid: async (_, { rfid }, { isAuthenticated, permissions }) => {
+		findUserByRfid: async (_, { rfid }, { isAuth, cache }) => {
 			try {
+				const { isAuthenticated, permissions } = isAuth;
+				const cacheReady = cache.status === 'ready';
+
 				if (!isAuthenticated || !hasPermission(permissions, allPermissions.READ_USERS)) {
 					throw new Error('Unauthorized');
 				}
+
+				//If user already in cache return them
+				if (cacheReady) {
+					const userInCache = JSON.parse(await cache.get(rfid));
+					if (userInCache) return userInCache;
+				}
+
 				const found_user = await User.findOne({ rfid });
 				if (!found_user) {
 					throw new Error('RFID does not exist');
 				}
+
+				//User was not in cache save them
+				cacheReady && (await cache.set(rfid, JSON.stringify(found_user)));
 				return User.findOne({ rfid });
 			} catch (err) {
 				throw new CustomError(
@@ -46,14 +75,11 @@ export default {
 					throw new Error('Incorrect Password');
 				}
 
-				const user_id = user._id;
 				const user_data = cleanUserInfo(user);
 				const token = jwt.sign({ ...user_data }, process.env.JWT_KEY, {
 					expiresIn: process.env.TOKEN_LIFE,
 				});
-
 				return {
-					userID: user_id,
 					token: token,
 					tokenExpiration: 1000,
 				};
@@ -67,18 +93,25 @@ export default {
 	},
 
 	Mutation: {
-		createUser: async (_, { UserInput }, { isAuthenticated, permissions }) => {
+		createUser: async (_, { UserInput }, { isAuth, cache }) => {
 			try {
+				const { isAuthenticated, permissions } = isAuth;
+				const cacheReady = cache.status === 'ready';
+
 				if (!isAuthenticated || !hasPermission(permissions, allPermissions.MODIFY_USERS)) {
 					throw new Error('Unauthorized');
 				}
+
 				const hashed_pass = await bcrypt.hash(UserInput.password, parseInt(process.env.HASH_SALT));
 				const user_permissions = assignPermissions(UserInput.role);
 				UserInput.password = hashed_pass;
 				UserInput.permissions = user_permissions;
+
 				const new_user = new User({
 					...UserInput,
 				});
+
+				cacheReady && cache.del('allUsers');
 				return await new_user.save();
 			} catch (err) {
 				throw new CustomError(
@@ -87,8 +120,11 @@ export default {
 				);
 			}
 		},
-		deleteUser: async (_, { userID }, { isAuthenticated, permissions }) => {
+		deleteUser: async (_, { userID }, { isAuth, cache }) => {
 			try {
+				const { isAuthenticated, permissions } = isAuth;
+				const cacheReady = cache.status === 'ready';
+
 				if (!isAuthenticated || !hasPermission(permissions, allPermissions.MODIFY_USERS)) {
 					throw new Error('Unauthorized');
 				}
@@ -100,8 +136,11 @@ export default {
 					throw new Error('User does not exist');
 				}
 				const isDelete = await User.deleteOne({ _id: userID });
-				if (isDelete.ok) return user;
-				else throw new Error('Could not delete user.');
+				if (isDelete.ok) {
+					cacheReady && cache.del(user.rfid);
+					cacheReady && cache.del('allUsers');
+					return user;
+				} else throw new Error('Could not delete user.');
 			} catch (err) {
 				throw new CustomError(
 					err.message,
@@ -113,8 +152,11 @@ export default {
 				);
 			}
 		},
-		updateUser: async (_, { userID, UserInput }, { isAuthenticated, permissions }) => {
+		updateUser: async (_, { userID, UserInput }, { isAuth, cache }) => {
 			try {
+				const { isAuthenticated, permissions } = isAuth;
+				const cacheReady = cache.status === 'ready';
+
 				if (!isAuthenticated || !hasPermission(permissions, allPermissions.MODIFY_USERS)) {
 					throw new Error('Unauthorized');
 				}
@@ -135,6 +177,8 @@ export default {
 					}
 				);
 				if (updated_user.nModified) {
+					cacheReady && cache.del(pre_user.rfid);
+					cacheReady && cache.del('allUsers');
 					return await User.findById(userID);
 				} else throw new Error('Could not update user');
 			} catch (err) {

@@ -6,22 +6,54 @@ import CustomError from '../../utils/customError';
 
 export default {
 	Query: {
-		locations: (_, _args, { isAuthenticated, permissions }) => {
+		locations: async (_, _args, { isAuth, cache }) => {
 			try {
+				const { isAuthenticated, permissions } = isAuth;
+				const cacheReady = cache.status === 'ready';
+
 				if (!isAuthenticated || !hasPermission(permissions, allPermissions.READ_LOCATIONS)) {
 					throw new Error('Unauthorized');
 				}
-				return Location.find();
+
+				//If locations already in cache return them
+				if (cacheReady) {
+					const stringifiedLocations = await cache.lrange('allLocations', 0, -1);
+					const locationsInCache = stringifiedLocations.length
+						? JSON.parse(stringifiedLocations)
+						: [];
+					if (locationsInCache.length) return locationsInCache;
+				}
+
+				const all_locations = await Location.find();
+
+				//All Locations were not in cache save them
+				cacheReady && (await cache.rpush('allLocations', JSON.stringify(all_locations)));
+
+				return all_locations;
 			} catch (err) {
 				throw new CustomError(err.message, err.message === 'Unauthorized' ? 403 : 500);
 			}
 		},
-		findLocationById: (_, { location_id }, { isAuthenticated, permissions }) => {
+		findLocationById: async (_, { location_id }, { isAuth, cache }) => {
 			try {
+				const { isAuthenticated, permissions } = isAuth;
+				const cacheReady = cache.status === 'ready';
+
 				if (!isAuthenticated || !hasPermission(permissions, allPermissions.READ_LOCATIONS)) {
 					throw new Error('Unauthorized');
 				}
-				return Location.findOne({ _id: location_id });
+
+				//If location already in cache return them
+				if (cacheReady) {
+					const locationInCache = JSON.parse(await cache.get(location_id));
+					if (locationInCache) return locationInCache;
+				}
+
+				const found_location = await Location.findOne({ _id: location_id });
+				//Location was not in cache save it
+				cacheReady && (await cache.set(location_id, JSON.stringify(found_location)));
+
+				return found_location;
 			} catch (err) {
 				throw new CustomError(err.message, err.message === 'Unauthorized' ? 403 : 500);
 			}
@@ -29,14 +61,19 @@ export default {
 	},
 
 	Mutation: {
-		createLocation: async (_, { LocationInput }, { isAuthenticated, permissions }) => {
+		createLocation: async (_, { LocationInput }, { isAuth, cache }) => {
 			try {
+				const { isAuthenticated, permissions } = isAuth;
+				const cacheReady = cache.status === 'ready';
+
 				if (!isAuthenticated || !hasPermission(permissions, allPermissions.MODIFY_LOCATIONS)) {
 					throw new Error('Unauthorized');
 				}
 				const new_location = new Location({
 					...LocationInput,
 				});
+
+				cacheReady && cache.del('allLocations');
 				return await new_location.save();
 			} catch (err) {
 				throw new CustomError(
@@ -45,8 +82,11 @@ export default {
 				);
 			}
 		},
-		deleteLocation: async (_, { locationID }, { isAuthenticated, permissions }) => {
+		deleteLocation: async (_, { locationID }, { isAuth, cache }) => {
 			try {
+				const { isAuthenticated, permissions } = isAuth;
+				const cacheReady = cache.status === 'ready';
+
 				if (!isAuthenticated || !hasPermission(permissions, allPermissions.MODIFY_LOCATIONS)) {
 					throw new Error('Unauthorized');
 				}
@@ -58,8 +98,11 @@ export default {
 					throw new Error('Location does not exist');
 				}
 				const isDelete = await Location.deleteOne({ _id: locationID });
-				if (isDelete.ok) return location;
-				else throw new Error('Could not delete location');
+				if (isDelete.ok) {
+					cacheReady && cache.del(location._id);
+					cacheReady && cache.del('allLocations');
+					return location;
+				} else throw new Error('Could not delete location');
 			} catch (err) {
 				throw new CustomError(
 					err.message,
@@ -71,8 +114,11 @@ export default {
 				);
 			}
 		},
-		updateLocation: async (_, { locationID, LocationInput }, { isAuthenticated, permissions }) => {
+		updateLocation: async (_, { locationID, LocationInput }, { isAuth, cache }) => {
 			try {
+				const { isAuthenticated, permissions } = isAuth;
+				const cacheReady = cache.status === 'ready';
+
 				if (!isAuthenticated || !hasPermission(permissions, allPermissions.MODIFY_LOCATIONS)) {
 					throw new Error('Unauthorized');
 				}
@@ -90,6 +136,8 @@ export default {
 					}
 				);
 				if (updated_location.nModified || updated_location.ok) {
+					cacheReady && cache.del(pre_location.rfid);
+					cacheReady && cache.del('allLocations');
 					return await Location.findById(locationID);
 				} else throw new Error('Could not update location.');
 			} catch (err) {

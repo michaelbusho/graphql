@@ -1,25 +1,42 @@
 import { ApolloServer } from 'apollo-server-express';
 import express from 'express';
 import mongoose from 'mongoose';
-import EnhancedRedis from './utils/enhancedCaching';
 import resolvers from './graphql/resolvers/index';
 import typeDefs from './graphql/schema/index';
 import isAuth from './middleware/isAuth';
+import rateLimit from 'express-rate-limit';
+import { createRedisCache } from './utils/functions';
 
-const port = process.env.PORT || 3000;
+const port = parseInt(process.env.PORT) || 3000;
 
 const startServer = async () => {
 	const app = express();
+
 	// Hide tech for security purposes
 	app.disable('x-powered-by');
+
+	//Create a Redis Cache
+	const cache = createRedisCache();
+
+	//Rate limiter
+	const apiLimiter = rateLimit({
+		windowMs: parseInt(process.env.RATE_LIMIT_WINDOW), // 1 minute
+		max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS),
+		message: 'Too many Requests. Please allow some time to cool down',
+	});
+
+	app.use(apiLimiter);
 
 	const server = new ApolloServer({
 		typeDefs,
 		resolvers,
 		persistedQueries: {
-			cache: new EnhancedRedis(),
+			cache: cache,
 		},
-		context: isAuth,
+		context: ({ req }) => ({
+			isAuth: isAuth(req),
+			cache: cache,
+		}),
 		formatError: function (error) {
 			return {
 				message: error && error.message,
