@@ -152,6 +152,9 @@ The requests are authenticated and certain actions/requests are restricted and a
 
 User passwords are hashed using bcrypt.
 
+rate limiter
+redis caching
+
 ## Tests
 
 ![Coverage Image](./resources/coverage_image.png)

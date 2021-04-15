@@ -12,7 +12,6 @@ export default gql`
 	}
 
 	type AuthData {
-		userID: ID!
 		token: String!
 		tokenExpiration: Int!
 	}

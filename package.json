@@ -43,6 +43,7 @@
     "babel-plugin-istanbul": "^6.0.0",
     "bcryptjs": "^2.4.3",
     "express": "^4.17.1",
+    "express-rate-limit": "^5.2.6",
     "graphql": "^15.5.0",
     "ioredis": "^4.24.5",
     "jsonwebtoken": "^8.5.1",

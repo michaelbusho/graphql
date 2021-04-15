@@ -14,7 +14,9 @@
           "MONGO_DATABASE": "",
           "HASH_SALT": "12",
           "JWT_KEY": "",
-          "TOKEN_LIFE": ""
+          "TOKEN_LIFE": "",
+          "RATE_LIMIT_WINDOW": "60000",
+          "RATE_LIMIT_MAX_REQUESTS": "70"
         },
         "program": "${workspaceFolder}/src/index.js",
         "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/babel-node",
