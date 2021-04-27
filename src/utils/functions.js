@@ -24,6 +24,7 @@ export function hasPermission(ownedPermissions, targetPermission) {
 
 export function cleanUserInfo(user) {
 	return {
+		id: user._id,
 		rfid: user.rfid,
 		email: user.email,
 		name: user.name,
